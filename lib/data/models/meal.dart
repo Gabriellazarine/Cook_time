@@ -1,22 +1,47 @@
 class Meal {
-  final String id;
+  final String idMeal;
   final String name;
-  final String image;
+  final String category;
+  final String area;
   final String instructions;
+  final String thumbnail;
+
+  final List<String> ingredients;
 
   Meal({
-    required this.id,
+    required this.idMeal,
     required this.name,
-    required this.image,
+    required this.category,
+    required this.area,
     required this.instructions,
+    required this.thumbnail,
+    required this.ingredients,
   });
 
   factory Meal.fromJson(Map<String, dynamic> json) {
+    List<String> ingredients = [];
+
+    for (int i = 1; i <= 20; i++) {
+      final ingredient = json['strIngredient$i'];
+      final measure = json['strMeasure$i'];
+
+      if (ingredient != null &&
+          ingredient.toString().isNotEmpty &&
+          ingredient.toString() != 'null') {
+        ingredients.add(
+          '${measure ?? ''} ${ingredient}'.trim(),
+        );
+      }
+    }
+
     return Meal(
-      id: json['idMeal'],
-      name: json['strMeal'],
-      image: json['strMealThumb'],
+      idMeal: json['idMeal'] ?? '',
+      name: json['strMeal'] ?? '',
+      category: json['strCategory'] ?? '',
+      area: json['strArea'] ?? '',
       instructions: json['strInstructions'] ?? '',
+      thumbnail: json['strMealThumb'] ?? '',
+      ingredients: ingredients,
     );
   }
 }
